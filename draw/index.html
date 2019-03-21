@@ -1,0 +1,249 @@
+<head>
+
+    <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
+
+    <script src="../lib/wideScreen.js"></script>
+
+
+    <style>
+        @import '../lib/wideScreen.css';
+        @import '../lib/clickArea.css';
+
+        #main_canvas {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            border: none;
+            padding: 0;
+        }
+
+        #help,
+        #help img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        #pen {
+            background-image: url('pen.png');
+        }
+
+        .pen #pen {
+            background-image: url('pen_activ.png');
+        }
+
+        #eraser {
+            background-image: url('eraser.png');
+        }
+
+        .eraser #eraser {
+            background-image: url('eraser_activ.png');
+        }
+
+        #guide {
+            background-image: url('guide_activ.png');
+        }
+
+        .noguide #guide {
+            background-image: url('guide.png');
+        }
+
+        #tools div {
+            width: 5.521%;
+            height: 7.407%;
+        }
+
+        #main {
+            background: white;
+        }
+
+        #full,
+        #partial,
+        #drawing {
+            position: absolute;
+            left: 6.09%;
+            top: 19.35%;
+            width: 87.76%;
+            height: 73.15%;
+        }
+
+        #full {
+            opacity: 0.1;
+            transition-property: opacity;
+            transition-duration: 0.5s;
+        }
+
+        .noguide #full {
+            opacity: 0;
+        }
+
+        .background {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="event.preventDefault()" ondragstart="event.preventDefault()">
+
+    <div id='main' class="wideScreen">
+
+        <img src="index.jpg" class="background">
+        <div id="back_home" class="clickArea" style="left: 2.5%; top: 5.7%; width: 6%; height: 7.5%; " onclick="window.location.href='..'"></div>
+
+        <div id="tools">
+            <div id="pen" class="clickArea" style="top: 5.74%; left: 11.46%;" onclick="tool('pen')"></div>
+            <div id="eraser" class="clickArea" style="top: 5.74%; left: 19.06%;" onclick="tool('eraser')"></div>
+            <div id="guide" class="clickArea" style="top: 5.74%; left: 26.67%;" onclick="toggleGuide()"></div>
+        </div>
+
+        <img id="full" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+        <canvas id="drawing" width="1685" height="790"></canvas>
+        <img id="partial" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onmouseup="penUp(event)"
+            onmousedown="penDown(event)" onmousemove="penMoved(event)">
+
+        <div id="help">
+            <img src="help.png">
+            <div class="clickArea" style="top: 0%; left: 0%; width: 100%; height: 100%;" onclick="document.getElementById('help').remove()"></div>
+        </div>
+    </div>
+    <script>
+
+        var currentTool
+        var guide = true;
+        var penIsDown = false;
+        var lastPosition;
+        var penDiameter
+
+        var motifs = {
+            enfant: {
+                full: "enfant_full.png"
+                , partial: "enfant.png"
+                , penDiameter: 24
+            }
+            , femme: {
+                full: "femme_full.png"
+                , partial: "femme.png"
+                , penDiameter: 14
+            }
+            , serpent: {
+                full: "serpent_full.png"
+                , partial: "serpent.png"
+                , penDiameter: 16
+            }
+            , tatou: {
+                full: "tatou_full.png"
+                , partial: "tatou.png"
+                , penDiameter: 26
+            }
+            , tortue: {
+                full: "tortue_full.png"
+                , partial: "tortue.png"
+                , penDiameter: 32
+            }
+            , poisson: {
+                full: "poisson_full.png"
+                , partial: "poisson.png"
+                , penDiameter: 16
+            }
+        }
+
+        function tool(which) {
+            var toolsClasses = document.getElementById('tools').classList;
+            if (currentTool) {
+                toolsClasses.remove(currentTool)
+            }
+            toolsClasses.add(which)
+            currentTool = which
+        }
+
+        function toggleGuide() {
+            guide = !guide
+
+            if (guide) {
+                document.getElementById('main').classList.remove('noguide')
+            } else {
+                document.getElementById('main').classList.add('noguide')
+            }
+        }
+
+        function penUp(e) {
+            console.log("up")
+            penIsDown = false;
+        }
+
+        function penDown(e) {
+            console.log("down")
+            lastPosition = canvasCoord(e)
+            penIsDown = true;
+        }
+
+        function penMoved(e) {
+            console.log("moved")
+            if (penIsDown) {
+                draw(e)
+            }
+            lastPosition = canvasCoord(e)
+        }
+
+        function draw(e) {
+            var drawing = document.getElementById('drawing')
+            var context = drawing.getContext("2d")
+            var to = canvasCoord(e)
+
+            if (currentTool == "eraser") {
+                context.globalCompositeOperation = "destination-out"
+            } else {
+                context.globalCompositeOperation = "source-over"
+            }
+
+            context.beginPath()
+            context.lineWidth = penDiameter
+            context.strokeStyle = "#8D5642"
+            context.lineCap = 'round'
+            context.moveTo(lastPosition.x, lastPosition.y)
+            context.lineTo(to.x, to.y)
+            context.stroke()
+        }
+
+        function canvasCoord(e) {
+            return {
+                x: e.layerX / drawing.clientHeight * drawing.height
+                , y: e.layerY / drawing.clientWidth * drawing.width
+            }
+        }
+
+        function getParameter(paramName) {
+            var url = window.location.href;
+            var paramWithEgal = paramName + '='
+            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
+            url = url.substring(paramStart)
+            var paramEnd = url.search('&')
+
+            var param = paramEnd > 0 ?
+                url.substring(0, paramEnd)
+                : url
+
+            return decodeURIComponent(param)
+        }
+
+        function updateMotif() {
+            var motifId = getParameter("motif")
+            var motif = motifs[motifId]
+
+            document.getElementById("full").src = motif.full
+            document.getElementById("partial").src = motif.partial
+            penDiameter = motif.penDiameter
+        }
+
+        tool('pen')
+        updateMotif()
+    </script>
+</body>

@@ -1,0 +1,69 @@
+<head>
+    <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
+
+    <script src="lib/wideScreen.js"></script>
+
+    <style>
+        @import 'lib/wideScreen.css';
+        @import 'lib/clickArea.css';
+
+        #main img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #credits {
+            display: none;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        #credits.shown {
+            display: block;
+        }
+
+        #credits img {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body oncontextmenu='event.preventDefault()'>
+
+    <div id="main" class="wideScreen">
+        <img src="index.jpg" />
+
+        <div class="clickArea" style="left: 4.17%; top: 5.56%; width: 29.17%; height: 41.67%;" onclick="window.location.href='draw?motif=serpent'"></div>
+        <div class="clickArea" style="left: 35.42%; top: 5.56%; width: 29.17%; height: 41.67%;" onclick="window.location.href='draw?motif=femme'"></div>
+        <div class="clickArea" style="left: 66.77%; top: 5.56%; width: 29.17%; height: 41.67%;" onclick="window.location.href='draw?motif=poisson'"></div>
+
+        <div class="clickArea" style="left: 4.17%; top: 52.78%; width: 29.17%; height: 41.67%;" onclick="window.location.href='draw?motif=tatou'"></div>
+        <div class="clickArea" style="left: 35.42%; top: 52.78%; width: 29.17%; height: 41.67%;" onclick="window.location.href='draw?motif=tortue'"></div>
+        <div class="clickArea" style="left: 66.77%; top: 52.78%; width: 29.17%; height: 41.67%;" onclick="window.location.href='draw?motif=enfant'"></div>
+
+        <div class="clickArea" style="left: 4%; bottom: 7%; width: 1.5%; height: 2.5%;" onclick="showCredits()"></div>
+        <div id="credits">
+            <img src="credits.png">
+            <div class="clickArea" style="right: 9%; bottom: 13%; width: 7%; height: 7.5%;" onclick="hideCredits()"></div>
+        </div>
+    </div>
+
+    <script>
+        function showCredits() {
+            var credits = document.getElementById("credits")
+            credits.classList.add("shown")
+        }
+
+        function hideCredits() {
+            var credits = document.getElementById("credits")
+            credits.classList.remove("shown")
+        }
+    </script>
+
+</body>
