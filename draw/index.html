@@ -61,6 +61,7 @@
             background: white;
         }
 
+        #mask,
         #full,
         #partial,
         #drawing {
@@ -69,6 +70,10 @@
             top: 19.35%;
             width: 87.76%;
             height: 73.15%;
+        }
+
+        #mask {
+            opacity: 0.8;
         }
 
         #full {
@@ -104,6 +109,7 @@
             <div id="guide" class="clickArea" style="top: 5.74%; left: 26.67%;" onclick="toggleGuide()"></div>
         </div>
 
+        <img id="mask" src="mask.png">
         <img id="full" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
         <canvas id="drawing" width="1685" height="790"></canvas>
         <img id="partial" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
