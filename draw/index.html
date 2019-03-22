@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
 
     <script src="../lib/wideScreen.js"></script>
-
+    <script src="../lib/gestures.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
@@ -106,8 +106,7 @@
 
         <img id="full" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
         <canvas id="drawing" width="1685" height="790"></canvas>
-        <img id="partial" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onmouseup="penUp(event)"
-            onmousedown="penDown(event)" onmousemove="penMoved(event)">
+        <img id="partial" src="data:gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
 
         <div id="help">
             <img src="help.png">
@@ -175,18 +174,15 @@
         }
 
         function penUp(e) {
-            console.log("up")
             penIsDown = false;
         }
 
         function penDown(e) {
-            console.log("down")
             lastPosition = canvasCoord(e)
             penIsDown = true;
         }
 
         function penMoved(e) {
-            console.log("moved")
             if (penIsDown) {
                 draw(e)
             }
@@ -206,7 +202,7 @@
 
             context.beginPath()
             context.lineWidth = penDiameter
-            context.strokeStyle = "#8D5642"
+            context.strokeStyle = "#000000"
             context.lineCap = 'round'
             context.moveTo(lastPosition.x, lastPosition.y)
             context.lineTo(to.x, to.y)
@@ -214,9 +210,11 @@
         }
 
         function canvasCoord(e) {
+            var canvasBoundingClient = document.getElementById("drawing").getBoundingClientRect()
+
             return {
-                x: e.layerX / drawing.clientHeight * drawing.height
-                , y: e.layerY / drawing.clientWidth * drawing.width
+                x: (e.pageX - canvasBoundingClient.left) * drawing.height / drawing.clientHeight
+                , y: (e.pageY -canvasBoundingClient.top) * drawing.width / drawing.clientWidth
             }
         }
 
@@ -242,6 +240,12 @@
             document.getElementById("partial").src = motif.partial
             penDiameter = motif.penDiameter
         }
+
+        addGesturesEventListeners("partial", {
+            penDown: penDown
+            , penUp: penUp
+            , penMoved: penMoved
+        })
 
         tool('pen')
         updateMotif()
