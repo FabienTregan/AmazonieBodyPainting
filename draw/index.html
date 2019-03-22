@@ -185,6 +185,7 @@
 
         function penDown(e) {
             lastPosition = canvasCoord(e)
+            draw(e)
             penIsDown = true;
         }
 
@@ -192,7 +193,6 @@
             if (penIsDown) {
                 draw(e)
             }
-            lastPosition = canvasCoord(e)
         }
 
         function draw(e) {
@@ -213,6 +213,8 @@
             context.moveTo(lastPosition.x, lastPosition.y)
             context.lineTo(to.x, to.y)
             context.stroke()
+
+            lastPosition = to
         }
 
         function canvasCoord(e) {
@@ -220,7 +222,7 @@
 
             return {
                 x: (e.pageX - canvasBoundingClient.left) * drawing.height / drawing.clientHeight
-                , y: (e.pageY -canvasBoundingClient.top) * drawing.width / drawing.clientWidth
+                , y: (e.pageY - canvasBoundingClient.top) * drawing.width / drawing.clientWidth
             }
         }
 
