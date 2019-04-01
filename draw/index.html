@@ -52,6 +52,10 @@
             background-image: url('guide.png');
         }
 
+        #clean {
+            background-image: url('clean.png');
+        }
+
         #tools div {
             width: 5.521%;
             height: 7.407%;
@@ -88,8 +92,8 @@
 
         .background {
             position: absolute;
-            top: 0px;
-            left: 0px;
+            top:0;
+            left:0;
             width: 100%;
             height: 100%;
         }
@@ -107,6 +111,7 @@
             <div id="pen" class="clickArea" style="top: 5.74%; left: 11.46%;" onclick="tool('pen')"></div>
             <div id="eraser" class="clickArea" style="top: 5.74%; left: 19.06%;" onclick="tool('eraser')"></div>
             <div id="guide" class="clickArea" style="top: 5.74%; left: 26.67%;" onclick="toggleGuide()"></div>
+            <div id="clean" class="clickArea" style="top: 5.74%; left: 34.27%;" onclick="clean()"></div>
         </div>
 
         <img id="mask" src="mask.png">
@@ -119,7 +124,7 @@
             <div class="clickArea" style="top: 0%; left: 0%; width: 100%; height: 100%;" onclick="document.getElementById('help').remove()"></div>
         </div>
     </div>
-    <script>
+    <script type="text/javascript">
 
         var currentTool
         var guide = true;
@@ -184,12 +189,14 @@
         }
 
         function penDown(e) {
+
             lastPosition = canvasCoord(e)
             draw(e)
             penIsDown = true;
         }
 
         function penMoved(e) {
+
             if (penIsDown) {
                 draw(e)
             }
@@ -215,6 +222,12 @@
             context.stroke()
 
             lastPosition = to
+        }
+
+        function clean() {
+            var drawing = document.getElementById('drawing')
+            var context = drawing.getContext("2d")
+            context.clearRect(0, 0, drawing.width, drawing.height)
         }
 
         function canvasCoord(e) {
