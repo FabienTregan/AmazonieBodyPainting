@@ -1,0 +1,232 @@
+<head>
+    <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
+
+    <script src="../lib/wideScreen.js"></script>
+
+    <style>
+        @import '../lib/wideScreen.css';
+        @import '../lib/clickArea.css';
+
+        @font-face {
+            font-family: 'Source Sans Black';
+            src: url('../font/SourceSansPro-Black.otf') format('woff');
+        }
+
+        @font-face {
+            font-family: 'Source Sans Italic';
+            src: url('../font/SourceSansPro-It.otf') format('woff');
+        }
+
+
+        body {
+            font-family: 'Source Sans';
+            color: black;
+        }
+
+        .background {
+            height: 100%;
+            width: 100%;
+        }
+
+        #images {
+            position: absolute;
+            left: 25.00%;
+            top: 17.50%;
+            width: 50.36%;
+            height: 63.24%;
+
+            overflow: hidden;
+        }
+
+        #scroller {
+            height: 100%;
+            position: absolute;
+            display: flex;
+            flex-direction: line;
+            flex-wrap: nowrap;
+            left: 0;
+
+            transition: left 0.5s ease-in-out;
+        }
+
+        #images img {
+            height: 100%;
+            width: auto;
+            outline: solid transparent;
+            border-width: 0 0.5em 0 0.5em;
+        }
+
+        #legend {
+            position: absolute;
+            left: 0;
+            top: 83%;
+            width: 100%;
+            height: 20%;
+            text-align: center;
+            font-size: 0.6em;
+            font-family: 'Source Sans Italic';
+            line-height: 1.75em;
+        }
+
+        #title {
+            position: absolute;
+            left: 0%;
+            top: 9.5%;
+            width: 100%;
+            text-align: center;
+            font-family: 'Source Sans Black';
+        }
+    </style>
+</head>
+
+<body oncontextmenu='event.preventDefault()'>
+
+    <div id="main" class="wideScreen">
+
+        <img class="background" src="index.jpg" />
+
+        <div id="title"></div>
+
+        <div id="images">
+            <div id="scroller">
+            </div>
+        </div>
+
+        <div id="legend">blabla bla blablabal<br>bli bla</div>
+
+        <div class="clickArea" style="top: 17%; left: 0.5%; width: 20%; height: 67%;" onclick="change(-1)"></div>
+        <div class="clickArea" style="top: 17%; left: 80%; width: 20%; height: 67%;" onclick="change(+1)"></div>
+        <div class="clickArea" style="top: 87%; left: 89.5%; width: 6.5%; height: 7%;"
+            onclick="window.location.href='../village'"></div>
+
+        <div class="clickArea" style="top: 87%; left: 85%; width: 7%; height: 8%;" onclick="toEnd()"></div>
+
+    </div>
+
+    <script>
+        "use strict";
+
+        const DEFAULT_LEGEND = "Peinture sur toile de coton, collectée au village Motukôre (T.I. Gorotire)<br>pendant la Mission Brésil Muséum / CNRS 2016 et conservée au Muséum de Toulouse."
+
+        var motifs = {
+            enfant: [
+                { title: "Motif du quotidien peint sur des enfant de sexe féminin", src: "Enfant/enfant-36.jpg" }
+                , { title: "Motif du quotidien peint sur des enfant de sexe féminin", src: "Enfant/enfant-37.jpg" }
+                , { title: "Motif “menokre” - motif de tête", src: "Enfant/enfant-46.jpg" }
+                , { title: "Motif “menokre” - motif de tête", src: "Enfant/enfant-47.jpg" }
+                , { title: "Motif “meprire ok” - Motif fin et complexe du quotidien réalisé sur les enfants", src: "Enfant/enfant-68.jpg" }
+                , { title: "Motif “meprire ok” - Motif fin et complexe du quotidien réalisé sur les enfants", src: "Enfant/enfant-85.jpg" }
+                , { title: "Motif “memy-ok” - Motif peint sur les enfants de sexe masculin", src: "Enfant/enfant-94.jpg" }
+                , { title: "Motif “menire-ok” - Motif peint sur les enfants de sexe féminin", src: "Enfant/enfant-41.jpg" }
+                , { title: "Peinture corporelle à l'occasion de la fête du manioc", legend: "Village Motukôre CC BY-SA-NC Serge Guiraud 2015.", src: "Enfant/R_2016_09_18_03_05_0099_72dpi.jpg" }
+            ]
+            , serpent: [
+                { title: "Motif “kangati-ok” - serpent boa", src: "Serpent/serpent-90.jpg" }
+                , { title: "Motif “kanga-ok” - serpent <i>Bothrops jararaca</i>", src: "Serpent/serpent-97.jpg" }
+                , { title: "Motif “kanga-ok” - serpent <i>Bothrops jararaca</i>", src: "Serpent/serpent-98.jpg" }
+                , { title: "Motif “kanga-ok” - serpent <i>Bothrops jararaca</i>", src: "Serpent/serpent-103.jpg" }
+                , { title: "Motif “abaika-ok” - serpent crotale <i>Crotalus cascavella</i>", src: "Serpent/serpent-56.jpg" }
+            ]
+            , femme: [
+                { title: "Motif “metuiaro-ok” - femme enceinte", src: "Genre/genre-64.jpg" }
+                , { title: "Motif “me-akereka” - premiers jours après la naissance de l'enfant", src: "Genre/genre-54.jpg" }
+                , { title: "Motif “meturaro-ok” - femme allaitante ", src: "Genre/genre-75.jpg" }
+                , { title: "Motif “memy-ok” - guerrier", src: "Genre/genre-52.jpg" }
+                , { title: "Motif “memy-ok” - garçon / homme", src: "Genre/genre-67.jpg" }
+                , { title: "Motif “meibe” ou la pluie qui tombe - peinture rituelle d'homme", legend: "Village de Motukôre CC BY-SA-NC Serge Guiraud 2015", src: "Genre/R_2016_09_09_03_04_0024_b_72dpi.jpg" }
+            ]
+            , poisson: [
+                { title: "Motif “tepikot-ok” - poisson tucunare", src: "Poisson/poisson-100.jpg" }
+                , { title: "Motif “kora” - poisson surubim", src: "Poisson/poisson-42.jpg" }
+                , { title: "Motif “krotire” - poisson trairon", src: "Poisson/poisson-70.jpg" }
+                , { title: "Motif “baikati” - poisson kari", src: "Poisson/poisson-102.jpg" }
+                , { title: "Motif de joue “tem” - poisson", src: "Poisson/poisson-48.jpg" }
+                , { title: "Motif de joue “tem” - poisson", legend: "Cet enfant est peint par sa mère. Il se prépare à une fête de village.", src: "Poisson/R_2016_09_18_03_05_0097_72dpi.jpg" }
+            ]
+            , tatou: [
+                { title: "Motif “ngyre-ok” - tatou", src: "Tatou/tatou-58.jpg" }
+                , { title: "Motif “Tot-ok” - tatou", src: "Tatou/tatou-95.jpg" }
+                , { title: "Danse de rituel", legend: "Cette photographie a été prise lors d'un rituel.<br>Le deuxième homme en partant de la gauche porte le motif du jaguar tandis que le cinquième porte celui du tatou", src: "Tatou/R_2016_09_09_03_04_0005_72dpi.jpg" }
+            ]
+            , tortue: [
+                { title: "Motif de tortue - femme qui peint ce motif", src: "Tortue/tortue-38.jpg" }
+                , { title: "Motif “kapran” - tortue jabuti", src: "Tortue/tortue-49.jpg" }
+                , { title: "Motif “kapran” - tortue jabuti", src: "Tortue/tortue-57.jpg" }
+                , { title: "Motif “kapran kai ok” - tortue jabuti femelle", src: "Tortue/tortue-62.jpg" }
+                , { title: "Motif “krantyxkrare ok” - petite tortue tracaja", src: "Tortue/tortue-69.jpg" }
+                , { title: "Motif “kapra ok” - tortue jabuti", src: "Tortue/tortue-87.jpg" }
+                , { title: "Motif “kapranti-ok” - tortue tartaruga", src: "Tortue/tortue-101.jpg" }
+                , { title: "Baignade avec une tortue", legend: "", src: "Tortue/R_2016_09_17_03_05_0051_72dpi.jpg" }
+                , { title: "Scéance de peinture corporelle", legend: "Village Motukôre CC BY-SA-NC Serge Guiraud 2015. ", src: "Tortue/R_2015_07_17_02_05_0017_1024px.jpg" }
+            ]
+        }
+
+        var currentImageNumber = 1
+        var motifId = getParameter("motif")
+        var currentMotif = motifs[motifId]
+
+        function change(n) {
+
+            currentImageNumber += n
+            if (currentImageNumber > currentMotif.length) { currentImageNumber = 1 }
+            if (currentImageNumber < 1) { currentImageNumber = currentMotif.length }
+
+            show(currentImageNumber)
+        }
+
+        function toEnd() {
+            window.location.href = '../end/?motif=' + motifId
+        }
+
+        function show(n) {
+
+            var scroller = document.getElementById("scroller")
+            var image = document.querySelectorAll("#images img")[n - 1]
+            var imageOffestLeft = image.offsetLeft
+
+            scroller.style.left = (-imageOffestLeft) + "px"
+
+            legendAndTitle(n)
+        }
+
+        function legendAndTitle(n) {
+            var legend = document.getElementById("legend")
+            legend.innerHTML = (currentMotif[n - 1].legend || DEFAULT_LEGEND)
+
+            var title = document.getElementById("title")
+            title.innerHTML = currentMotif[n - 1].title
+        }
+
+        function getParameter(paramName) {
+            var url = window.location.href;
+            var paramWithEgal = paramName + '='
+            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
+            url = url.substring(paramStart)
+            var paramEnd = url.search('&')
+
+            var param = paramEnd > 0 ?
+                url.substring(0, paramEnd)
+                : url
+
+            return decodeURIComponent(param)
+        }
+
+        function initContent() {
+
+            var scroller = document.getElementById("scroller")
+            for (var i = 0; i < currentMotif.length; i++) {
+                var image = document.createElement("img")
+                image.src = currentMotif[i].src
+                scroller.appendChild(image)
+            }
+
+            var title = document.getElementById("title")
+            title.innerHTML = currentMotif.title
+        }
+
+        initContent()
+        show(1)
+    </script>
+
+</body>
