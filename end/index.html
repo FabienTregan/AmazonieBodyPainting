@@ -1,0 +1,158 @@
+<head>
+
+    <meta name='viewport' content='width=device-width,user-scalable=no'>
+    <meta charset="utf-8" />
+
+    <script src="../lib/wideScreen.js"></script>
+    <script src="../lib/gestures.js"></script>
+
+    <style>
+        @import '../lib/wideScreen.css';
+        @import '../lib/clickArea.css';
+
+        @font-face {
+            font-family: 'Source Sans';
+            src: url('../font/SourceSansPro-Regular.otf') format('woff');
+        }
+
+        @font-face {
+            font-family: 'Source Sans Black';
+            src: url('../font/SourceSansPro-Black.otf') format('woff');
+        }
+
+        @font-face {
+            font-family: 'Source Sans Italic';
+            src: url('../font/SourceSansPro-It.otf') format('woff');
+        }
+
+        body {
+            font-family: 'Source Sans';
+        }
+
+        .background {
+            width: 100%;
+            height: 100%;
+        }
+
+        #image {
+            position: absolute;
+            left: 4.17%;
+            top: 5.56%;
+            width: 52.08%;
+            height: auto;
+        }
+
+        .info {
+            position: absolute;
+            left: 62.19%;
+            top: 6.48%;
+            width: 34%;
+            height: 75%;
+        }
+
+        #title {
+            font-family: 'Source Sans Black';
+            line-height: 1.3em;
+        }
+
+        #text {
+            margin-top: 7%;
+            font-family: 'Source Sans Italic';
+            font-size: 0.75em;
+            line-height: 1.4em;
+        }
+
+        #title p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="event.preventDefault()" ondragstart="event.preventDefault()">
+
+    <div id='main' class="wideScreen">
+        <img class="background" src="index.jpg" />
+
+        <img id="image">
+
+        <div class="info">
+            <div id="title"></div>
+            <div id="text"></div>
+        </div>
+
+        <div class="clickArea" style="top: 87%; left: 26.5%; width: 7%; height: 8%;"
+            onclick="window.location.href='..'"></div>
+
+    </div>
+
+    <script type="text/javascript">
+    </script>
+
+    <script>
+
+        var motifId = getParameter("motif")
+
+        var motifs = {
+            enfant: {
+                imageSrc: "enfant.png"
+                , title: "<p>Bravo !</p><p>Vous venez de compléter le motif corporel de culture mebêngôkre kayapo nommé \"menire-ok\" qui signifie motif pour les enfants de sexe féminin !</p>"
+                , text: "<p>Une importance particulière est accordée à la décoration du corps des jeunes enfants. Une scéance dure de 4 à 5 heures, elle peut avoir lieu plusieurs fois par semaine. Les enfants sont peints par leur mère ou par des femmes de la famille.  La peinture corporelle est une partie importante du processus de socialisation de l'enfant dans le collectif.</p>"
+            }
+            , femme: {
+                imageSrc: "femme.png"
+                , title: "<p>Bravo !</p><p>Vous venez de compléter le motif corporel de culture mebêngôkre kayapo nommé \"meturaro-ok\" qui signifie \"la femme allaitante\" !</p>"
+                , text: "<p>Les corps des kayapos sont toujours couverts de motifs, le plus souvent réalisés par les femmes.</p><p>Certains ne sont représentés qu'à certaines occasions précises : tels que le motif de la femme enceinte ou de la femme qui vient d'accoucher, le motif de l'homme guerrier pour le rituel d'initiation du nom ou d'autres rituels...</p>"
+            }
+            , serpent: {
+                imageSrc: "serpent.png"
+                , title: "<p>Bravo !</p><p>Vous venez de compléter le motif corporel de culture mebêngôkre kayapo nommé \"abaika-ok\" qui signifie motif crotale <i>Crotalus cascavella</i> !</p>"
+                , text: "<p>Ce motif peut être peint sur les corps des hommes kayapo lors de la fête de nomination.</p><p>Les motifs des animaux sur un corps marque le lien indisssociable des humains avec tous les êtres vivants. Ils ne symbolisent pas le \"caractère\" de cet animal.</p><p>Celui du serpent est récurrent chez plusieurs peuples amérindiens. Une série de zigzags représenteraient la forme du serpent tandis qu'une série de losanges correspondraient aux dessins sur sa peau.</p>"
+            }
+            , tatou: {
+                imageSrc: "tatou.png"
+                , title: "<p>Bravo !</p><p>Vous venez de compléter le motif corporel de culture mebêngôkre kayapo nommé \"tot-ok\" qui signifie tatou !</p>"
+                , text: "<p>Ce motif est peint sur tout le corps quelque soit l'âge. Il est utilisé au quotidien et pour les fêtes comme celle d’imposition du nom par les hommes et les femmes.</p><p>Le tatou est l'animal symbolique du mythe d'origine de ce peuple.</p>"
+            }
+            , tortue: {
+                imageSrc: "tortue.png"
+                , title: "<p>Bravo !</p><p>Vous venez de compléter le motif corporel de culture mebêngôkre kayapo nommé \"kapranti-ok\" qui signifie tortue !</p>"
+                , text: "<p>La tortue est un animal très présent chez les kayapo. Elle est chassée comme met de choix pour les cérémonies et influence fortement le répertoire graphique. Les motifs \"tortue\" ou \"carapace de tortue\" sont dominés par des carrés souvent emboités les uns dans les autres. Celui de la tortue jabuti, la tortue de forêt (kapran-ok), est porté à tous les âges et pour toutes les occasions. Il en existe de nombreuses variations.</p>"
+            }
+            , poisson: {
+                imageSrc: "poisson.png"
+                , title: "<p>Bravo !</p><p>Vous venez de compléter le motif corporel de culture mebêngôkre kayapo nommé \"tepikot-ok\" qui signifie le poisson tucunare !</p>"
+                , text: "<p>Les poissons ont une place tout particulière chez les kayapo. C'est un animal fréquemment mangé  qui est fortement présent dans la mythologie de leur culture.</p><p>Les motifs \"poisson\" ou \"arrêtes de poisson\" sont composés de multiples hachures parallèles disposées soit de part et d'autre d'un axe de symétrie, soit en treillis.</p>"
+            }
+        }
+
+        function getParameter(paramName) {
+            var url = window.location.href;
+            var paramWithEgal = paramName + '='
+            var paramStart = url.search(paramWithEgal) + paramWithEgal.length
+            url = url.substring(paramStart)
+            var paramEnd = url.search('&')
+
+            var param = paramEnd > 0 ?
+                url.substring(0, paramEnd)
+                : url
+
+            return decodeURIComponent(param)
+        }
+
+        function updateMotif() {
+            var motif = motifs[motifId]
+
+            var image = document.getElementById("image")
+            image.src = motif.imageSrc
+
+            var title = document.getElementById("title")
+            title.innerHTML = motif.title
+
+            var text = document.getElementById("text")
+            text.innerHTML = motif.text
+        }
+
+        updateMotif()
+
+    </script>
+</body>

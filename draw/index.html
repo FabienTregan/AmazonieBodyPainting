@@ -97,6 +97,15 @@
             width: 100%;
             height: 100%;
         }
+
+        #next {
+            position: absolute;
+            cursor: pointer;
+            top: 87%;
+            left: 90%;
+            width: 5.68%;
+            height: auto;
+        }
     </style>
 </head>
 
@@ -123,8 +132,13 @@
             <img src="help.png">
             <div class="clickArea" style="top: 0%; left: 0%; width: 100%; height: 100%;" onclick="document.getElementById('help').remove()"></div>
         </div>
+
+        <img id="next" src="next.png" onclick="end()">
+
     </div>
     <script type="text/javascript">
+
+        var motifId = getParameter("motif")
 
         var currentTool
         var guide = true;
@@ -163,6 +177,10 @@
                 , partial: "poisson.png"
                 , penDiameter: 16
             }
+        }
+
+        function end() {
+            window.location.href = "../end?motif=" + motifId
         }
 
         function tool(which) {
@@ -254,7 +272,6 @@
         }
 
         function updateMotif() {
-            var motifId = getParameter("motif")
             var motif = motifs[motifId]
 
             document.getElementById("full").src = motif.full
