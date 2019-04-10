@@ -5,6 +5,7 @@
 
     <script src="../lib/wideScreen.js"></script>
     <script src="../lib/gestures.js"></script>
+    <script src="../lib/autobackhome.js"></script>
 
     <style>
         @import '../lib/wideScreen.css';
@@ -87,8 +88,7 @@
 
         <div class="clickArea" style="top: 87%; left: 26.5%; width: 7%; height: 8%;"
             onclick="window.location.href='..'"></div>
-        <div class="clickArea" style="top: 87%; left: 72.5%; width: 13%; height: 8%;"
-            onclick="toCollection()"></div>
+        <div class="clickArea" style="top: 87%; left: 72.5%; width: 13%; height: 8%;" onclick="toCollection()"></div>
 
     </div>
 
@@ -144,7 +144,7 @@
         }
 
         function toCollection() {
-            window.location.href='../collection/?motif=' + motifId
+            window.location.href = '../collection/?motif=' + motifId
         }
 
         function updateMotif() {
@@ -161,6 +161,7 @@
         }
 
         updateMotif()
+        autobackhome("..")
 
     </script>
 </body>
