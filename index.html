@@ -34,27 +34,37 @@
             height: 100%;
             width: 100%;
         }
+
+        #fullscreenFrame {
+            position: absolute;
+            height: 0px;
+            width: 0px;
+            border: none;
+            padding: none;
+        }
     </style>
 </head>
 
 <body oncontextmenu='event.preventDefault()'>
 
     <div id="main" class="wideScreen">
+        <iframe id="fullscreenFrame" src="./draw?motif=enfant"></iframe>
+
         <img src="index.png" />
 
         <div class="clickArea" style="left: 4.17%; top: 5.56%; width: 29.17%; height: 41.67%;"
-            onclick="window.location.href='draw?motif=serpent'"></div>
+            onclick="draw('serpent')"></div>
         <div class="clickArea" style="left: 35.42%; top: 5.56%; width: 29.17%; height: 41.67%;"
-            onclick="window.location.href='draw?motif=femme'"></div>
+            onclick="draw('femme')"></div>
         <div class="clickArea" style="left: 66.77%; top: 5.56%; width: 29.17%; height: 41.67%;"
-            onclick="window.location.href='draw?motif=poisson'"></div>
+            onclick="draw('poisson')"></div>
 
         <div class="clickArea" style="left: 4.17%; top: 52.78%; width: 29.17%; height: 41.67%;"
-            onclick="window.location.href='draw?motif=tatou'"></div>
+            onclick="draw('tatou')"></div>
         <div class="clickArea" style="left: 35.42%; top: 52.78%; width: 29.17%; height: 41.67%;"
-            onclick="window.location.href='draw?motif=tortue'"></div>
+            onclick="draw('tortue')"></div>
         <div class="clickArea" style="left: 66.77%; top: 52.78%; width: 29.17%; height: 41.67%;"
-            onclick="window.location.href='draw?motif=enfant'"></div>
+            onclick="draw('enfant')"></div>
 
         <div class="clickArea" style="left: 4%; bottom: 7%; width: 1.5%; height: 2.5%;" onclick="showCredits()"></div>
         <div id="credits">
@@ -65,6 +75,13 @@
     </div>
 
     <script>
+
+        function draw(motif) {
+            var frame = document.getElementById('fullscreenFrame')
+            frame.src = './draw?motif=' + motif
+            frame.requestFullscreen()
+        }
+
         function showCredits() {
             var credits = document.getElementById("credits")
             credits.classList.add("shown")
