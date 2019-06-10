@@ -54,13 +54,13 @@
 
         <div class="clickArea" style="left: 4.17%; top: 5.56%; width: 29.17%; height: 41.67%;"
             onclick="draw('serpent')"></div>
-        <div class="clickArea" style="left: 35.42%; top: 5.56%; width: 29.17%; height: 41.67%;"
-            onclick="draw('femme')"></div>
+        <div class="clickArea" style="left: 35.42%; top: 5.56%; width: 29.17%; height: 41.67%;" onclick="draw('femme')">
+        </div>
         <div class="clickArea" style="left: 66.77%; top: 5.56%; width: 29.17%; height: 41.67%;"
             onclick="draw('poisson')"></div>
 
-        <div class="clickArea" style="left: 4.17%; top: 52.78%; width: 29.17%; height: 41.67%;"
-            onclick="draw('tatou')"></div>
+        <div class="clickArea" style="left: 4.17%; top: 52.78%; width: 29.17%; height: 41.67%;" onclick="draw('tatou')">
+        </div>
         <div class="clickArea" style="left: 35.42%; top: 52.78%; width: 29.17%; height: 41.67%;"
             onclick="draw('tortue')"></div>
         <div class="clickArea" style="left: 66.77%; top: 52.78%; width: 29.17%; height: 41.67%;"
@@ -76,10 +76,19 @@
 
     <script>
 
+        function tryFullscreen(url) {
+            var iframe = document.getElementById('fullscreenFrame')
+
+            if (iframe.requestFullscreen) {
+                iframe.src = url
+                iframe.requestFullscreen()
+            } else {
+                document.location = url
+            }
+        }
+
         function draw(motif) {
-            var frame = document.getElementById('fullscreenFrame')
-            frame.src = './draw?motif=' + motif
-            frame.requestFullscreen()
+            tryFullscreen( './draw?motif=' + motif)
         }
 
         function showCredits() {
